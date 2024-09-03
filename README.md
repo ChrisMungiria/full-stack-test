@@ -28,3 +28,4 @@ Caro is attending Workshop X in Nairobi at the Museum. Upon arrival at the entra
 1. Express - A backend web framework for NodeJS
 2. Mongoose - MongoDB object modelling tool
 3. Nodemon (devDependency) - a tool used to reload the server when a change is made
+4. Dotenv - A tool to access environment variables using `process.env` in files
