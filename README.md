@@ -12,3 +12,19 @@ Caro is attending Workshop X in Nairobi at the Museum. Upon arrival at the entra
 4. ⁠When Caro leaves the premise the geotagging is stopped and the time she left is logged into the database.
 
 ![alt text](image.png)
+
+# Implementation
+
+- This project will be over-engineered to meet practices that would be used in production
+- The project stack is:
+  1. NodeJS for the backend
+  2. ReactJS with CRA (Create React App) with TypeScript for the front-end
+  3. MongoDB for the database
+
+## Backend
+
+### Dependencies
+
+1. Express - A backend web framework for NodeJS
+2. Mongoose - MongoDB object modelling tool
+3. Nodemon (devDependency) - a tool used to reload the server when a change is made
