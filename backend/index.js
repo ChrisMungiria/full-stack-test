@@ -22,6 +22,22 @@ app.post("/api/createUser", async (req, res) => {
   }
 });
 
+// Find a user by ID
+app.get("/api/getUser/:IdNumber", async (req, res) => {
+  try {
+    const { IdNumber } = req.params;
+    const user = await User.findOne({ IdNumber: IdNumber });
+
+    if (!user) {
+      return res.status(404).json({ message: "No user found" });
+    }
+    console.log("User: ", user);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 mongoose
   .connect(MONGO_URI)
   .then(() => {
