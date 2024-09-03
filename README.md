@@ -29,3 +29,9 @@ Caro is attending Workshop X in Nairobi at the Museum. Upon arrival at the entra
 2. Mongoose - MongoDB object modelling tool
 3. Nodemon (devDependency) - a tool used to reload the server when a change is made
 4. Dotenv - A tool to access environment variables using `process.env` in files
+
+### Steps to follow
+
+1. Copy `.env.example` into `.env` and replace the PORT and MONGO_URI with your own values
+2. Run `npm i` in your terminal, make sure you're in the backend directory to install the dependencies.
+3. To run the development server, run `npm run dev`
