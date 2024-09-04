@@ -30,8 +30,19 @@ Caro is attending Workshop X in Nairobi at the Museum. Upon arrival at the entra
 3. Nodemon (devDependency) - a tool used to reload the server when a change is made
 4. Dotenv - A tool to access environment variables using `process.env` in files
 
-### Steps to follow
+### Steps to follow to run the backend
 
 1. Copy `.env.example` into `.env` and replace the PORT and MONGO_URI with your own values
 2. Run `npm i` in your terminal, make sure you're in the backend directory to install the dependencies.
 3. To run the development server, run `npm run dev`
+
+#### Steps I took to set up the backend
+
+1. Create an express server that listens on a PORT (8001)
+2. Created a project in MongoDB Atlas, in this project, I created a cluster and copied the connection URI into the `.env`.
+3. Using `mongoose` I connected to the MongoDB cluster, remebering to add a database name after `mongodb.net`.
+4. After the database had connected successfully, I created a user model with the fields I would need: name, ID number, mobile number, and email address.
+5. I then defined two API endpoints that would be useful to consume from the front-end:
+
+- `/api/createUser` - A POST request that creates a user in the database.
+- `/api/getUser/:IdNumber` - A GET request that gets a user by their ID number from the database.
