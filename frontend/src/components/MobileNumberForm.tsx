@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const IDNumberForm = () => {
+const MobileNumberForm = () => {
   const [number, setNumber] = useState<string>("");
   const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -45,7 +45,7 @@ const IDNumberForm = () => {
       <input
         type="text"
         value={number}
-        placeholder="Enter your ID Number"
+        placeholder="Enter your mobile number"
         onChange={(e) => setNumber(e.target.value)}
         className="p-2 rounded-md border border-slate-300 w-full focus:outline-none"
       />
@@ -62,4 +62,4 @@ const IDNumberForm = () => {
   );
 };
 
-export default IDNumberForm;
+export default MobileNumberForm;
