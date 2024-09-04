@@ -1,8 +1,11 @@
 import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const IDNumberForm = () => {
   const [number, setNumber] = useState<string>("");
   const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const handleSubmitIDNumber = async (e: FormEvent) => {
     e.preventDefault();
@@ -22,12 +25,14 @@ const IDNumberForm = () => {
         throw new Error("No user found");
       }
       const data = await response.json();
-      // TODO: This user has been here before
-    } catch (error: any) {
-      console.log("Error in handleSubmitIDNumber: ", error.message);
-      if (error.message === "No user found") {
-        // TODO: This user has not been here before, add their information
+      if (data) {
+        return navigate("/home");
       }
+    } catch (error: any) {
+      if (error.message === "No user found") {
+        return navigate("/addDetails");
+      }
+      console.log("Error in handleSubmitIDNumber: ", error.message);
     } finally {
       setSubmitting(false);
     }

@@ -1,11 +1,8 @@
-import IDNumberForm from "./components/IDNumberForm";
+import { RouterProvider } from "react-router-dom";
+import router from "./Router";
 
 function App() {
-  return (
-    <main className="min-h-screen flex flex-col items-center justify-center">
-      <IDNumberForm />
-    </main>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
