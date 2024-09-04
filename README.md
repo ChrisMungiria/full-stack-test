@@ -46,7 +46,7 @@ Caro is attending Workshop X in Nairobi at the Museum. Upon arrival at the entra
 6. I then defined two API endpoints that would be useful to consume from the front-end:
 
 - `/api/createUser` - A POST request that creates a user in the database.
-- `/api/getUser/:IdNumber` - A GET request that gets a user by their ID number from the database.
+- `/api/getUser/:mobileNumber` - A GET request that gets a user by their mobile number from the database.
 
 ## Frontend
 
@@ -65,9 +65,9 @@ Caro is attending Workshop X in Nairobi at the Museum. Upon arrival at the entra
 1. Create a react app using `npx create-react-app@latest ./ --template --typescript`.
 2. I installed TailwindCSS for the styling.
 3. I removed the files I would not use inside `/src`.
-4. Inside `App.tsx`, I created a component `<IDNumberForm />` that a would take in a user's ID number, and consume the `/api/getUser/:IdNumber` to check if a user exists in the database.
+4. Inside `App.tsx`, I created a component `<MobileNumberForm />` that a would take in a user's mobile number, and consume the `/api/getUser/:mobileNumber` to check if a user exists in the database.
 5. At this point I needed to enable CORS (Cross-Resource Origin Sharing) on the backend by `npm i cors` in the backend, and running `app.use(cors());` before I start calling endpoints.
-6. I used `fetch()` inside the handleSubmit of the `<IDNumber />` form to check if a user exists.
+6. I used `fetch()` inside the handleSubmit of the `<MobileNumberForm />` form to check if a user exists.
 7. I installed `react-router-dom` and created a `Router.js` in the root of my project which will define my project routes.
 8. Inside the `App.tsx` I replaced the content with a `<RouterProvider />` and created three pages `<LandingPage />`, `<HomePage />` and `<AddDetailsPage />`.
 9. Inside `<AddDetailsPage />`, there is a `<AddDetailsForm />`, this makes a POST request to the API `/api/createUser` with the user's data.
