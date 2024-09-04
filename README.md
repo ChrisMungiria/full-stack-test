@@ -38,11 +38,32 @@ Caro is attending Workshop X in Nairobi at the Museum. Upon arrival at the entra
 
 #### Steps I took to set up the backend
 
-1. Create an express server that listens on a PORT (8001)
-2. Created a project in MongoDB Atlas, in this project, I created a cluster and copied the connection URI into the `.env`.
-3. Using `mongoose` I connected to the MongoDB cluster, remebering to add a database name after `mongodb.net`.
-4. After the database had connected successfully, I created a user model with the fields I would need: name, ID number, mobile number, and email address.
-5. I then defined two API endpoints that would be useful to consume from the front-end:
+1. Initialised a new NodeJS project by `npm init -y`
+2. Create an express server that listens on a PORT (8001)
+3. Created a project in MongoDB Atlas, in this project, I created a cluster and copied the connection URI into the `.env`.
+4. Using `mongoose` I connected to the MongoDB cluster, remebering to add a database name after `mongodb.net`.
+5. After the database had connected successfully, I created a user model with the fields I would need: name, ID number, mobile number, and email address.
+6. I then defined two API endpoints that would be useful to consume from the front-end:
 
 - `/api/createUser` - A POST request that creates a user in the database.
 - `/api/getUser/:IdNumber` - A GET request that gets a user by their ID number from the database.
+
+## Frontend
+
+### Dependencies
+
+1. TailwindCSS - a CSS framework for styling
+
+### Steps to follow to run the backend
+
+1. Run `npm i` in your terminal, make sure you're in the frontend directory to install the dependencies.
+2. To run the development server, run `npm run start`
+
+### Steps I took to set up the frontend
+
+1. Create a react app using `npx create-react-app@latest ./ --template --typescript`.
+2. I installed TailwindCSS for the styling.
+3. I removed the files I would not use inside `/src`.
+4. Inside `App.tsx`, I created a component `<IDNumberForm />` that a would take in a user's ID number, and consume the `/api/getUser/:IdNumber` to check if a user exists in the database.
+5. At this point I needed to enable CORS (Cross-Resource Origin Sharing) on the backend by `npm i cors` in the backend, and running `app.use(cors());` before I start calling endpoints.
+6. I used `fetch()` inside the handleSubmit of the `<IDNumber />` form to check if a user exists.
