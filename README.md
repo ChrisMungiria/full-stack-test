@@ -69,4 +69,5 @@ Caro is attending Workshop X in Nairobi at the Museum. Upon arrival at the entra
 5. At this point I needed to enable CORS (Cross-Resource Origin Sharing) on the backend by `npm i cors` in the backend, and running `app.use(cors());` before I start calling endpoints.
 6. I used `fetch()` inside the handleSubmit of the `<IDNumber />` form to check if a user exists.
 7. I installed `react-router-dom` and created a `Router.js` in the root of my project which will define my project routes.
-8. Inside the `App.tsx` I replaced the content with a `<RouterProvider />` and created three pages `<LandingPage />`, `<HomePage />` and `<AddDetailsPage />`
+8. Inside the `App.tsx` I replaced the content with a `<RouterProvider />` and created three pages `<LandingPage />`, `<HomePage />` and `<AddDetailsPage />`.
+9. Inside `<AddDetailsPage />`, there is a `<AddDetailsForm />`, this makes a POST request to the API `/api/createUser` with the user's data.
