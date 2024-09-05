@@ -30,6 +30,7 @@ const MobileNumberForm = () => {
       }
     } catch (error: any) {
       if (error.message === "No user found") {
+        alert("Hello there, it seems you're new here");
         return navigate("/addDetails");
       }
       console.log("Error in handleSubmitIDNumber: ", error.message);

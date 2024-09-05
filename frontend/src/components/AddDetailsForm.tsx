@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import TermsAndConditions from "./TermsAndConditions";
 import { CiCircleCheck } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
 // name, ID number, mobile number, and email address.
 const AddDetailsForm = () => {
@@ -15,6 +16,9 @@ const AddDetailsForm = () => {
 
   //   Loading state
   const [submitting, setSubmitting] = useState<boolean>(false);
+
+  // Navigator
+  const navigate = useNavigate();
 
   //   Form Submit Handler
   const handleSubmitAddDetailsForm = async (e: FormEvent) => {
@@ -34,6 +38,8 @@ const AddDetailsForm = () => {
         }),
       });
       console.log("Response: ", response);
+      alert("Nice to meet you, I hope we'll be seeing more of you soon");
+      navigate("/home");
     } catch (error) {
       console.log("Error in handleSubmitAddDetailsForm: ", error);
     } finally {
