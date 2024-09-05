@@ -4,9 +4,10 @@ require("dotenv").config();
 const dotenv = require("dotenv");
 
 const mongoose = require("mongoose");
-const User = require("./models/user.model");
 
 const cors = require("cors");
+const Times = require("./models/times.model");
+const User = require("./models/user.model");
 
 const app = express();
 app.use(express.json());
@@ -36,6 +37,19 @@ app.get("/api/getUser/:mobileNumber", async (req, res) => {
       return res.status(404).json({ message: "No user found" });
     }
     res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Log the user log in time
+app.post("/api/logLogInTime", async (req, res) => {
+  try {
+    const { userID } = req.body;
+    const time = await Times.create({
+      userID,
+    });
+    res.status(200).json(time);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
