@@ -34,7 +34,9 @@ const TermsAndConditions = ({
           he hearing am it totally removal. Remove but suffer wanted his lively
           length. Moonlight two applauded conveying end direction old principle
           but. Are expenses distance weddings perceive strongly who age
-          domestic.
+          domestic. What you're basically agreeing to is me logging your
+          location until you leave the event premises. This includes entry and
+          exit time.
         </p>
         <button
           onClick={handleAcceptTerms}
