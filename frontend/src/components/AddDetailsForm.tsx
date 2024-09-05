@@ -37,9 +37,10 @@ const AddDetailsForm = () => {
           email,
         }),
       });
-      console.log("Response: ", response);
+      const data = await response.json();
+      const userID = data._id;
       alert("Nice to meet you, I hope we'll be seeing more of you soon");
-      navigate("/home");
+      navigate(`/home/${userID}`);
     } catch (error) {
       console.log("Error in handleSubmitAddDetailsForm: ", error);
     } finally {
