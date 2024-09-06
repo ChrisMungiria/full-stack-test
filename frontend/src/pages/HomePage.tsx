@@ -1,34 +1,10 @@
 import { useParams } from "react-router-dom";
-import { logLogInTime, updateUserLocation } from "../actions";
-import { useEffect } from "react";
+import { logLogInTime } from "../actions";
 import MapComponent from "../components/MapComponent";
 
 const HomePage = () => {
   const { userID } = useParams();
   logLogInTime(userID!);
-
-  useEffect(() => {
-    if (userID) {
-      logLogInTime(userID);
-
-      if (navigator.geolocation) {
-        const watchId = navigator.geolocation.watchPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            updateUserLocation(userID, latitude, longitude);
-          },
-          (error) => console.error("Error getting location:", error),
-          { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-        );
-
-        return () => {
-          navigator.geolocation.clearWatch(watchId);
-        };
-      } else {
-        console.error("Geolocation is not supported by this browser.");
-      }
-    }
-  }, [userID]);
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-slate-100">
@@ -39,9 +15,8 @@ const HomePage = () => {
         <h2 className="text-xs text-slate-500">
           *You agreed to this in the terms and conditions
         </h2>
-        <div className="w-full h-52 relative">
-          <div className="inset-0 absolute bg-slate-200 rounded-md animate-pulse"></div>
-          <MapComponent />
+        <div className="w-full h-56 relative">
+          <MapComponent userID={userID!} />
         </div>
       </div>
     </div>
