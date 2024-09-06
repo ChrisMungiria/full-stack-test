@@ -77,6 +77,21 @@ app.post("/api/logLogInTime", async (req, res) => {
   }
 });
 
+// Update the user's latitude and longitude
+app.post("/api/updateLocation", async (req, res) => {
+  try {
+    const { userID, latitude, longitude } = req.body;
+
+    console.log(
+      `User: ${userID} is at latitude: ${latitude} and longitude :${longitude}`
+    );
+
+    res.status(200).json({ message: "User's location updated successfully" });
+  } catch (error) {
+    console.log("Error in /api/updateLocation: ", error);
+  }
+});
+
 mongoose
   .connect(MONGO_URI)
   .then(() => {
