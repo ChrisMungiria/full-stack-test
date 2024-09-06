@@ -1,17 +1,15 @@
 const express = require("express");
-
-require("dotenv").config();
 const dotenv = require("dotenv");
-
 const mongoose = require("mongoose");
-
 const cors = require("cors");
-const Times = require("./models/times.model");
+
+dotenv.config();
+
 const User = require("./models/user.model");
+const UserActivity = require("./models/userActivity.model"); // Update to your new schema name
 
 const app = express();
 app.use(express.json());
-
 app.use(cors());
 
 const PORT = process.env.PORT;
@@ -54,13 +52,14 @@ app.post("/api/logLogInTime", async (req, res) => {
     endOfDay.setHours(23, 59, 59, 999);
 
     // Check if the user has logged in today
-    const existingLog = await Times.findOne({
+    const existingLog = await UserActivity.findOne({
       userID,
       loginTime: {
         $gte: startOfDay,
         $lt: endOfDay,
       },
     });
+
     if (existingLog) {
       return res
         .status(200)
@@ -68,9 +67,10 @@ app.post("/api/logLogInTime", async (req, res) => {
     }
 
     // Log the current time
-    const time = await Times.create({
+    const time = await UserActivity.create({
       userID,
     });
+
     res.status(200).json(time);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -83,12 +83,34 @@ app.post("/api/updateLocation", async (req, res) => {
     const { userID, latitude, longitude } = req.body;
 
     console.log(
-      `User: ${userID} is at latitude: ${latitude} and longitude :${longitude}`
+      `User: ${userID} is at latitude: ${latitude} and longitude: ${longitude}`
     );
+
+    // Find the latest activity entry for the user
+    const latestActivity = await UserActivity.findOne({
+      userID,
+      logoutTime: { $exists: false }, // Ensure we are updating an active session
+    }).sort({ loginTime: -1 });
+
+    if (!latestActivity) {
+      return res
+        .status(404)
+        .json({ message: "No active session found for the user" });
+    }
+
+    // Add the new location to the user's latest activity
+    latestActivity.locations.push({
+      latitude,
+      longitude,
+      timestamp: new Date(),
+    });
+
+    await latestActivity.save();
 
     res.status(200).json({ message: "User's location updated successfully" });
   } catch (error) {
     console.log("Error in /api/updateLocation: ", error);
+    res.status(500).json({ message: error.message });
   }
 });
 

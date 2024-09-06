@@ -27,3 +27,15 @@ export const updateUserLocation = async (
     }),
   });
 };
+
+export const logLogOutTime = async (userID: string) => {
+  await fetch("http://localhost:8001/api/logLogOutTime", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userID,
+    }),
+  });
+};

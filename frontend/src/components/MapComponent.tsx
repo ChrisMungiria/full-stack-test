@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Polygon, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
 import * as turf from "@turf/turf";
-import { updateUserLocation } from "../actions";
+import { logLogOutTime, updateUserLocation } from "../actions";
 
 type Location = {
   latitude: number;
@@ -16,7 +16,8 @@ const MapComponent = ({ userID }: { userID: string }) => {
     latitude: 0,
     longitude: 0,
   });
-  const [isInsidePolygon, setIsInsidePolygon] = useState<boolean>(false);
+  const [isInsidePolygon, setIsInsidePolygon] = useState<boolean>();
+  const prevIsInsidePolygon = useRef(isInsidePolygon);
 
   const polygonCoords = [
     [-1.2614758, 36.798213],
@@ -69,9 +70,16 @@ const MapComponent = ({ userID }: { userID: string }) => {
   useEffect(() => {
     if (isInsidePolygon) {
       updateUserLocation(userID, userLocation.latitude, userLocation.longitude);
+    } else if (prevIsInsidePolygon.current) {
+      // User has moved outside the polygon
+      console.log("You have moved outside the polygon");
+      logLogOutTime(userID);
     } else {
       console.log("You are not in the polygon");
     }
+
+    // Update the ref to the current state
+    prevIsInsidePolygon.current = isInsidePolygon;
   }, [isInsidePolygon, userLocation.latitude, userLocation.longitude, userID]);
 
   return (
