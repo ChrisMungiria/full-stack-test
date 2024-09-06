@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { logLogInTime, updateUserLocation } from "../actions";
 import { useEffect } from "react";
+import MapComponent from "../components/MapComponent";
 
 const HomePage = () => {
   const { userID } = useParams();
@@ -38,6 +39,10 @@ const HomePage = () => {
         <h2 className="text-xs text-slate-500">
           *You agreed to this in the terms and conditions
         </h2>
+        <div className="w-full h-52 relative">
+          <div className="inset-0 absolute bg-slate-200 rounded-md animate-pulse"></div>
+          <MapComponent />
+        </div>
       </div>
     </div>
   );
