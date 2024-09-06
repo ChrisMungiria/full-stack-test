@@ -1,5 +1,5 @@
 export const logLogInTime = async (userID: string) => {
-  const response = await fetch("http://localhost:8001/api/logLogInTime", {
+  await fetch("http://localhost:8001/api/logLogInTime", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -8,5 +8,4 @@ export const logLogInTime = async (userID: string) => {
       userID,
     }),
   });
-  console.log("response: ", response);
 };

@@ -46,6 +46,28 @@ app.get("/api/getUser/:mobileNumber", async (req, res) => {
 app.post("/api/logLogInTime", async (req, res) => {
   try {
     const { userID } = req.body;
+
+    // Get the current date without time
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    // Check if the user has logged in today
+    const existingLog = await Times.findOne({
+      userID,
+      loginTime: {
+        $gte: startOfDay,
+        $lt: endOfDay,
+      },
+    });
+    if (existingLog) {
+      return res
+        .status(200)
+        .json({ message: "User has already logged in today" });
+    }
+
+    // Log the current time
     const time = await Times.create({
       userID,
     });
