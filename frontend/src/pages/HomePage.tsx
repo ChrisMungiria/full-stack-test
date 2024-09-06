@@ -1,9 +1,10 @@
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { logLogInTime } from "../actions";
 
 const HomePage = () => {
-  // const { userID } = useParams();
-  // const logUserLogInTime = () => {};
-  // const logUserLocation = () => {};
+  const { userID } = useParams();
+  logLogInTime(userID!);
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-slate-100">
       <div className="w-11/12 max-w-xs bg-white rounded-md p-4 space-y-4">
