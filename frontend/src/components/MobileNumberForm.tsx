@@ -26,7 +26,10 @@ const MobileNumberForm = () => {
       }
       const data = await response.json();
       if (data) {
-        return navigate("/home");
+        const userID = data._id;
+        const userName = data.name;
+        alert(`Hi ${userName}! Welcome to the event!`);
+        navigate(`/home/${userID}`);
       }
     } catch (error: any) {
       if (error.message === "No user found") {
