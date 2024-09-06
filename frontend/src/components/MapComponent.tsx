@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, Polygon, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
+import * as turf from "@turf/turf";
 
 type InitialLocation = {
   latitude: number;
@@ -15,6 +16,24 @@ const MapComponent = () => {
     longitude: 0,
   });
 
+  const polygonCoords = [
+    [-1.2614758, 36.798213],
+    [-1.2720915, 36.7986427],
+    [-1.2755358, 36.7943406],
+    [-1.2614758, 36.798213], // Close the polygon
+  ];
+
+  const [isInsidePolygon, setIsInsidePolygon] = useState<boolean>(false);
+
+  const checkIfInsidePolygon = (latitude: number, longitude: number) => {
+    const point = turf.point([longitude, latitude]);
+    const polygon = turf.polygon([
+      polygonCoords.map((coord) => [coord[1], coord[0]]),
+    ]);
+
+    return turf.booleanPointInPolygon(point, polygon);
+  };
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition((position) => {
@@ -23,9 +42,16 @@ const MapComponent = () => {
           latitude,
           longitude,
         });
+        const insidePolygon = checkIfInsidePolygon(latitude, longitude);
+        setIsInsidePolygon(insidePolygon);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    // TODO: log the user's location if they are inside the polygon
+  }, [isInsidePolygon]);
 
   return (
     <>
@@ -46,9 +72,9 @@ const MapComponent = () => {
               color: "purple",
             }}
             positions={[
-              [-1.266219, 36.7983968],
-              [-1.2673778, 36.7990406],
-              [-1.2669702, 36.7960901],
+              [-1.2614758, 36.798213],
+              [-1.2720915, 36.7986427],
+              [-1.2755358, 36.7943406],
             ]}
           />
           <Marker
@@ -58,7 +84,10 @@ const MapComponent = () => {
             }}
             icon={icon}
           >
-            <Popup>This is your location</Popup>
+            <Popup>
+              This is your location
+              {isInsidePolygon ? " - Inside Polygon" : " - Outside Polygon"}
+            </Popup>
           </Marker>
 
           <TileLayer
