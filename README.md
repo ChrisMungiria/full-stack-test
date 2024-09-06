@@ -48,6 +48,11 @@ Caro is attending Workshop X in Nairobi at the Museum. Upon arrival at the entra
 - `/api/createUser` - A POST request that creates a user in the database.
 - `/api/getUser/:mobileNumber` - A GET request that gets a user by their mobile number from the database.
 
+7. I created another API endpoint `/api/logLogInTime` that stores the time a user first opens the home page, meaning they have just checked in
+8. A new data model called `userActivity` which would store the user log in time, an array of objects containing the latitude, longitude and timestamps as well as the log out time.
+9. The API `/api/updateLocation` gets the user's ID, latitude and longitude and records inside the `userActivity` model in the database as soon as they are received from the client.
+10. The API `/api/logLogOutTime` is called to update the `logoutTime` of a user when they are detected outside the polygon.
+
 ## Frontend
 
 ### Dependencies
@@ -71,3 +76,10 @@ Caro is attending Workshop X in Nairobi at the Museum. Upon arrival at the entra
 7. I installed `react-router-dom` and created a `Router.js` in the root of my project which will define my project routes.
 8. Inside the `App.tsx` I replaced the content with a `<RouterProvider />` and created three pages `<LandingPage />`, `<HomePage />` and `<AddDetailsPage />`.
 9. Inside `<AddDetailsPage />`, there is a `<AddDetailsForm />`, this makes a POST request to the API `/api/createUser` with the user's data.
+10. Inide the `Router.js` I modified the home path to include the userID, this is useful to know which user's location is being tracked. I also modified all routing to the home page to include the userID.
+11. I set up an `actions.ts` file which stores all the actions, which in this sense are requests to the backend
+12. Inside the `actions.ts` I added a function that stores the user log in time.
+13. Using the GeoLocation inbuilt API I was able to send the user's current location to the backend through a function in the `actions.ts` called `updateUserLocation`.
+14. I used `leaflet` and `react-leaflet` to render a map on the screen inside the `<MapComponent />`.
+15. The method `checkIfInsidePolygon` uses a library `@turf/turf` to calculate whether the user's current location is inside the polygon.
+16. The user's location is detected outside the polygon using a prevState ref, that's if the current `isInsidePolygon` is false but the previous was true, this sends a request to the backend to record the log out time and stops sending the user's location
