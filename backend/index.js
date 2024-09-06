@@ -114,6 +114,32 @@ app.post("/api/updateLocation", async (req, res) => {
   }
 });
 
+app.post("/api/logLogOutTime", async (req, res) => {
+  try {
+    const { userID } = req.body;
+
+    // Find the most recent login record for the user
+    const loginRecord = await UserActivity.findOne({ userID }).sort({
+      loginTime: -1,
+    });
+
+    if (!loginRecord || loginRecord.logoutTime) {
+      return res.status(404).json({ message: "No active login session found" });
+    }
+
+    // Update the logout time
+    loginRecord.logoutTime = new Date();
+    await loginRecord.save();
+
+    console.log("Logged out");
+
+    res.status(200).json(loginRecord);
+  } catch (error) {
+    console.log("Error: ", error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 mongoose
   .connect(MONGO_URI)
   .then(() => {
