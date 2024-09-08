@@ -1,6 +1,8 @@
 # Node Modules
 /backend/node_modules
 /frontend/node_modules
+/typescript-backend/node_modules
 
 # Environment files
 /backend/.env
+/typescript-backend/.env
