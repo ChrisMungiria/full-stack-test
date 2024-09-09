@@ -18,12 +18,22 @@ const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
 
 async function createAndUploadRandomUsers() {
+  const generatedIds = new Set();
+
   function createRandomUser() {
+    let idNumber;
+    do {
+      idNumber = faker.number.int({ min: 100, max: 200 });
+    } while (generatedIds.has(idNumber));
+
+    generatedIds.add(idNumber);
+
     return {
-      IdNumber: faker.number.int({ min: 100, max: 200 }),
+      IdNumber: idNumber,
       fullName: faker.person.fullName(),
     };
   }
+
   const users = faker.helpers.multiple(createRandomUser, {
     count: 50,
   });
@@ -38,8 +48,42 @@ async function createAndUploadRandomUsers() {
   }
 }
 
+async function checkIfUserIsInRandomUserDatabase(
+  IdNumber: number,
+  name: string
+): Promise<any> {
+  try {
+    const user = await RandomUser.findOne({ IdNumber });
+
+    if (user) {
+      const userFullNameWords = user.fullName.toLowerCase().split(" ").sort();
+      const inputNameWords = name.toLowerCase().split(" ").sort();
+
+      // Check if both arrays contain the same words
+      if (
+        JSON.stringify(userFullNameWords) === JSON.stringify(inputNameWords)
+      ) {
+        return user;
+      }
+    }
+    return null;
+  } catch (error) {
+    console.log("Error in checkIfUserIsInRandomUserDatabase: ", error);
+    return null;
+  }
+}
+
 // Create a user
 app.post("/api/createUser", async (req: Request, res: Response) => {
+  const { name, IdNumber, mobileNumber, email } = req.body;
+  const userFound = await checkIfUserIsInRandomUserDatabase(IdNumber, name);
+
+  // If there is no user return
+  if (!userFound)
+    return res
+      .status(404)
+      .json({ message: "User with such details does not exist" });
+
   try {
     const user = await User.create(req.body);
     res.status(200).json(user);
