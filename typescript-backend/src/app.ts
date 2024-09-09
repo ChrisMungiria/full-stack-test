@@ -2,9 +2,11 @@ import express, { Application, Request, Response } from "express";
 import { connect } from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import { faker } from "@faker-js/faker";
 
 const User = require("./models/user.model");
 const UserActivity = require("./models/userActivity.model");
+const RandomUser = require("./models/randomUser.model");
 
 dotenv.config();
 
@@ -14,6 +16,27 @@ app.use(cors());
 
 const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
+
+async function createAndUploadRandomUsers() {
+  function createRandomUser() {
+    return {
+      IdNumber: faker.number.int({ min: 100, max: 200 }),
+      fullName: faker.person.fullName(),
+    };
+  }
+  const users = faker.helpers.multiple(createRandomUser, {
+    count: 50,
+  });
+
+  try {
+    console.log("CREATING USERS....");
+    const response = await RandomUser.create(users);
+    console.log("Response: ", response);
+    console.log("----------- USERS CREATED -----------");
+  } catch (error) {
+    console.log("Error in createRandomUsers: ", error);
+  }
+}
 
 // Create a user
 app.post("/api/createUser", async (req: Request, res: Response) => {
@@ -142,6 +165,7 @@ connect(MONGO_URI!)
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
+    createAndUploadRandomUsers();
   })
   .catch((error) => {
     console.log("Error connecting to MongoDB: ", error);
